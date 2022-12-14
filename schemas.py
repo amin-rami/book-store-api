@@ -1,9 +1,9 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from uuid import UUID
 
 
 
 class Book(BaseModel):
-    id: int | None = None
-    title: str
-    author: str
+    id: int
+    title: str = Field()
+    author: str = Field()
