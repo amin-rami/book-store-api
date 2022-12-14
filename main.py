@@ -2,6 +2,7 @@ from fastapi import FastAPI, APIRouter, Body, Path, HTTPException, Query
 from books_data import DATA
 from schemas import Book
 import utils
+from starlette.responses import JSONResponse
 
 
 app = FastAPI(title='Books API')
@@ -11,6 +12,10 @@ BOOKS_DATA = [Book(**book) for book in DATA]
 
 @book_router.get("/")
 async def get_book(max_results: int = Query(default=None)):
+    if max_results and max_results < 0:
+        return JSONResponse(
+            status_code=418,
+            content={"message": "invalid query parameter"})
     return BOOKS_DATA[:max_results]
 
 @book_router.post("/create", status_code=200)
